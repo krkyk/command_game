@@ -1,17 +1,17 @@
 import "./Monster.css";
 
-export default function Monster() {
+export const Monster = ({ hp }) => {
   return (
     <div className="container">
-      <span role="img" aria-label="👹" class="monster">
+      <span role="img" aria-label="👹" className="monster">
         👹
       </span>
       <div className="info">
         <div className="name">モンスター</div>
         <div className="hp">
-          HP<span>100/100</span>
+          <span>HP{hp}/100</span>
         </div>
       </div>
     </div>
   );
-}
+};
