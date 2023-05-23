@@ -8,3 +8,18 @@
   justify-content: center;
   align-items: center;
 }
+
+button {
+  margin: 8px;
+  padding: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 5px;
+  background-color: #dcdddd;
+  border-color: #dcdddd;
+}
+
+button:hover {
+  cursor: pointer;
+  border: 4px solid #2ca9e1;
+}

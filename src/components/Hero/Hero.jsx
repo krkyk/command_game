@@ -1,11 +1,17 @@
 import "./Hero.css";
 
-export const Hero = ({ hp }) => {
+export const Hero = ({ hp, isTransformed }) => {
   return (
     <div className="container">
-      <span role="img" aria-label="🥷" className="hero">
-        🥷
-      </span>
+      {isTransformed ? (
+        <span role="img" aria-label="🐸" className="hero">
+          🐸
+        </span>
+      ) : (
+        <span role="img" aria-label="🥷" className="hero">
+          🥷
+        </span>
+      )}
       <div className="info">
         <div className="name">忍者</div>
         <div className="hp">

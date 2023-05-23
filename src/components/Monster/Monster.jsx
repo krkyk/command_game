@@ -1,11 +1,18 @@
 import "./Monster.css";
 
-export const Monster = ({ hp }) => {
+export const Monster = ({ hp, isTransformed }) => {
   return (
     <div className="container">
-      <span role="img" aria-label="👹" className="monster">
-        👹
-      </span>
+      {isTransformed ? (
+        <span role="img" aria-label="👹" className="hero">
+          👹
+          <span>!?</span>
+        </span>
+      ) : (
+        <span role="img" aria-label="👹" className="monster">
+          👹
+        </span>
+      )}
       <div className="info">
         <div className="name">モンスター</div>
         <div className="hp">
