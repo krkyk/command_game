@@ -1,12 +1,10 @@
+import img from "./images/dance.gif";
+import "./Dance.css";
+
 export const Dance = () => {
   return (
     <div className="container">
-      <span role="img" aria-label="👯" className="hero">
-        👯
-        <span role="img" aria-label="✨">
-          ✨
-        </span>
-      </span>
+      <img src={img} alt="" className="dance-img" />
     </div>
   );
 };
