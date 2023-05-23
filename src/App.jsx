@@ -7,23 +7,38 @@ import "./styles.css";
 import { wait } from "./utils/wait";
 
 export default function App() {
-  const [hp, setHp] = useState(100);
-  const [monsterHp, setMonsterHp] = useState(100);
+  const HERO = {
+    name: "ニンジャ",
+    hp: 100
+  };
+
+  const MONSTER = {
+    name: "モンスター",
+    hp: 100
+  };
+
+  const [heroInfo, setHeroInfo] = useState(HERO);
+  const [monsterInfo, setMonsterInfo] = useState(MONSTER);
   const [message, setMessage] = useState(null);
-  const [BattleStatus, setBattleStatus] = useState();
+  const [battleStatus, setBattleStatus] = useState(0);
   const [isEscaped, setIsEscaped] = useState(false);
   const [isTransformed, setIsTransformed] = useState(false);
   const [transformMessage, setTransformMessage] = useState(null);
+
   const ATTACK_POINT = {
     MAX: 31,
     MIN: 10
   };
+
   const BATTLE_STATUS = {
     DOING: 0,
     END: 1
   };
 
   const handleAttack = () => {
+    const newHero = { ...heroInfo };
+    const newMonster = { ...monsterInfo };
+
     Promise.resolve()
       .then(() => handleHeroAttack())
       .then(() => wait(2000))
@@ -46,31 +61,34 @@ export default function App() {
     };
 
     const handleHeroAttack = () => {
-      setMessage("忍者の攻撃！");
-      const attackPoint = getAttackPoint();
-      setMonsterHp(monsterHp - attackPoint);
-      if (monsterHp < 0) {
+      setMessage(`${HERO.name}の攻撃！`);
+      const afterHp = MONSTER.hp - getAttackPoint();
+      console.log(afterHp);
+      if (afterHp <= 0) {
         throw new Error("MONSTER_DEAD");
       }
+      newMonster.hp = afterHp;
+      setMonsterInfo(newMonster);
     };
 
     const handleMonsterAttack = () => {
-      setMessage("モンスターの攻撃！");
-      const attackPoint = getAttackPoint();
-      setHp(hp - attackPoint);
-      if (hp < 0) {
+      setMessage(`${MONSTER.name}の攻撃！`);
+      const afterHp = HERO.hp - getAttackPoint();
+      if (afterHp <= 0) {
         throw new Error("HERO_DEAD");
       }
+      newHero.hp = afterHp;
+      setHeroInfo(newHero);
     };
 
     const handleError = (err) => {
       switch (err.message) {
         case "MONSTER_DEAD":
-          setMessage("モンスターをたおした！");
+          setMessage(`${MONSTER.name}をたおした！`);
           setBattleStatus(BATTLE_STATUS.END);
           break;
         case "HERO_DEAD":
-          setMessage("忍者はたおれてしまった！");
+          setMessage(`${HERO.name}はたおれてしまった！`);
           setBattleStatus(BATTLE_STATUS.END);
           break;
         default:
@@ -81,19 +99,29 @@ export default function App() {
   };
 
   const handleEscape = () => {
-    setMessage("忍者は逃げ出した！");
+    setMessage(`${HERO.name}は逃げ出した！`);
     setIsEscaped(true);
   };
 
   const handleTransform = () => {
-    setTransformMessage("忍者は変身した！\nモンスターは混乱している！");
+    setTransformMessage(
+      `${HERO.name}は変身した！\n${MONSTER.name}は混乱している！`
+    );
     setIsTransformed(true);
+  };
+
+  const handleReset = () => {
+    setMessage(null);
+    setBattleStatus(0);
+    setIsEscaped(false);
+    setIsTransformed(false);
+    setTransformMessage(null);
   };
 
   return (
     <div className="App">
-      {isEscaped || <Monster hp={monsterHp} isTransformed={isTransformed} />}
-      <Hero hp={hp} isTransformed={isTransformed} />
+      {isEscaped || <Monster monster={MONSTER} isTransformed={isTransformed} />}
+      <Hero hero={HERO} isTransformed={isTransformed} />
       {message === null || <Message message={message} />}
       {transformMessage === null || <Message message={transformMessage} />}
       <CommandBox
@@ -101,7 +129,7 @@ export default function App() {
         handleEscape={handleEscape}
         handleTransform={handleTransform}
       />
-      <button className="reset-btn" onClick={() => window.location.reload()}>
+      <button className="reset-btn" onClick={handleReset}>
         全てリセット
       </button>
     </div>

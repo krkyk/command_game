@@ -1,6 +1,6 @@
 import "./Monster.css";
 
-export const Monster = ({ hp, isTransformed }) => {
+export const Monster = ({ monster, isTransformed }) => {
   return (
     <div className="container">
       {isTransformed ? (
@@ -14,9 +14,9 @@ export const Monster = ({ hp, isTransformed }) => {
         </span>
       )}
       <div className="info">
-        <div className="name">モンスター</div>
+        <div className="name">{monster.name}</div>
         <div className="hp">
-          <span>HP{hp}/100</span>
+          <span>HP{monster.hp}/100</span>
         </div>
       </div>
     </div>
