@@ -12,6 +12,7 @@ export const Hero = ({ hero, isTransformed }) => {
           🥷
         </span>
       )}
+
       <div className="info">
         <div className="name">{hero.name}</div>
         <div className="hp">

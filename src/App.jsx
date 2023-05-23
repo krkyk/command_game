@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { CommandBox } from "./components/CommandBox/CommandBox";
+import { Dance } from "./components/Dance/Dance";
 import { Hero } from "./components/Hero/Hero";
 import { Message } from "./components/Message/Message";
 import { Monster } from "./components/Monster/Monster";
+import { Reset } from "./components/Reset/Reset";
 import "./styles.css";
 import { wait } from "./utils/wait";
 
@@ -23,6 +25,7 @@ export default function App() {
   const [battleStatus, setBattleStatus] = useState(0);
   const [isEscaped, setIsEscaped] = useState(false);
   const [isTransformed, setIsTransformed] = useState(false);
+  const [isDance, setIsDance] = useState(false);
   const [transformMessage, setTransformMessage] = useState(null);
 
   const ATTACK_POINT = {
@@ -110,28 +113,59 @@ export default function App() {
     setIsTransformed(true);
   };
 
+  const handleDance = () => {
+    setMessage(`${HERO.name}と${MONSTER.name}はダンス友達になった！`);
+    setIsDance(true);
+  };
+
   const handleReset = () => {
     setMessage(null);
     setBattleStatus(0);
     setIsEscaped(false);
     setIsTransformed(false);
     setTransformMessage(null);
+    setIsDance(false);
   };
 
   return (
-    <div className="App">
-      {isEscaped || <Monster monster={MONSTER} isTransformed={isTransformed} />}
-      <Hero hero={HERO} isTransformed={isTransformed} />
-      {message === null || <Message message={message} />}
-      {transformMessage === null || <Message message={transformMessage} />}
-      <CommandBox
-        handleAttack={handleAttack}
-        handleEscape={handleEscape}
-        handleTransform={handleTransform}
-      />
-      <button className="reset-btn" onClick={handleReset}>
-        全てリセット
-      </button>
-    </div>
+    <>
+      {isDance ? (
+        <div className="App">
+          <Dance />
+          <Message message={message} />
+          <Reset handleReset={handleReset} />
+        </div>
+      ) : (
+        <div className="App">
+          {isEscaped ? (
+            <>
+              <Hero hero={HERO} isTransformed={isTransformed} />
+              {message === null || <Message message={message} />}
+              <Reset handleReset={handleReset} />
+            </>
+          ) : (
+            <>
+              <Monster monster={MONSTER} isTransformed={isTransformed} />
+              <Hero
+                hero={HERO}
+                isTransformed={isTransformed}
+                isEscaped={isEscaped}
+              />
+              {message === null || <Message message={message} />}
+              {transformMessage === null || (
+                <Message message={transformMessage} />
+              )}
+              <CommandBox
+                handleAttack={handleAttack}
+                handleEscape={handleEscape}
+                handleTransform={handleTransform}
+                handleDance={handleDance}
+              />
+              <Reset handleReset={handleReset} />
+            </>
+          )}
+        </div>
+      )}
+    </>
   );
 }

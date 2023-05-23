@@ -1,0 +1,16 @@
+.reset-box {
+  display: flex;
+}
+
+.reset-btn {
+  background-color: #664032;
+  color: #fff;
+  font-weight: normal;
+  padding: 5px 8px;
+  border: none;
+  margin: 20px auto;
+}
+
+.reset-btn:hover {
+  border: 2px solid #fcc800;
+}
